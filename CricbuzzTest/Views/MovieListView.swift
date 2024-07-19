@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct MovieListView: View {
+    var type: SectionType
     var name: String
-    var viewModel: MovieListViewModel
+    @EnvironmentObject var viewModelContainer: ViewModelContainer<MovieListViewModelImpl>
     let maxHeight: CGFloat = 300
     var body: some View {
         List {
-            ForEach(viewModel.getFilteredMovies(filter: name), id: \.imdbID) { movie in
+            ForEach(viewModelContainer.viewModel.filteredMovies, id: \.imdbID) { movie in
                 MovieCell(movie: movie)
                     .listRowBackground(Color.white)
             }
@@ -26,6 +27,6 @@ struct MovieListView: View {
     }
     
     func getHeight() -> CGFloat {
-        return CGFloat(min(viewModel.getFilteredMovies(filter: name).count * 150, 500))
+        return CGFloat(min(viewModelContainer.viewModel.filteredMovies.count * 150, 500))
     }
 }

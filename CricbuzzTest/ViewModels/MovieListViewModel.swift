@@ -7,16 +7,13 @@
 
 import Foundation
 
-protocol MovieListViewModel {
+protocol MovieListViewModel: ObservableObject {
     var movies: [Movie] { get set }
     var searchText: String { get set }
     var filteredMovies: [Movie] { get }
-    var years: [String] { get }
-    var genres: [String] { get }
-    var directors: [String] { get }
-    var actors: [String] { get }
+    var data: [String] { get set }
+    func onExpand(type: SectionType, filter: String)
     func loadMovies()
-    func getFilteredMovies(filter: String) -> [Movie]
 }
 
 enum SectionType: String, CaseIterable {
@@ -27,31 +24,21 @@ enum SectionType: String, CaseIterable {
     case AllMovies = "AllMovies"
 }
 
-class MovieListViewModelImpl: ObservableObject, MovieListViewModel {
-    var movies: [Movie] = []
-    @Published var searchText: String = ""
-    
-    private lazy var allYears: [String] = {
-        return getAllUniqueData(for: .Year)
-    }()
-    
-    private lazy var allGenres: [String] = {
-        return getAllUniqueData(for: .Genre)
-    }()
-    
-    private lazy var allDirectors: [String] = {
-        return getAllUniqueData(for: .Directors)
-    }()
-    
-    private lazy var allActors: [String] = {
-        return getAllUniqueData(for: .Actors)
-    }()
-    
-    var filteredMovies: [Movie] {
+class MovieListViewModelImpl: MovieListViewModel {
+    @Published var movies: [Movie] = []
+    @Published var searchText: String = "" {
+        didSet {
+            search()
+        }
+    }
+    @Published var data: [String] = [String]()
+    @Published var filteredMovies: [Movie] = [Movie]()
+
+    func search() {
         if searchText.isEmpty {
-            return movies
+            filteredMovies = movies
         } else {
-            return movies.filter { movie in
+            filteredMovies = movies.filter { movie in
                 movie.title.localizedCaseInsensitiveContains(searchText) ||
                 movie.actors.localizedCaseInsensitiveContains(searchText) ||
                 movie.genre.localizedCaseInsensitiveContains(searchText) ||
@@ -60,20 +47,23 @@ class MovieListViewModelImpl: ObservableObject, MovieListViewModel {
         }
     }
     
-    var years: [String] {
-        return allYears
-    }
-    
-    var genres: [String] {
-        return allGenres
-    }
-    
-    var directors: [String] {
-        return allDirectors
-    }
-    
-    var actors: [String] {
-        return allActors
+    func onExpand(type: SectionType, filter: String = "") {
+        switch type {
+            case .Year:
+                data = getAllUniqueData(for: .Year)
+                filteredMovies = movies.filter { movie in movie.year.localizedStandardContains(filter) }
+            case .Actors:
+                data = getAllUniqueData(for: .Actors)
+                filteredMovies = movies.filter { movie in movie.actors.localizedStandardContains(filter) }
+            case .Directors:
+                data = getAllUniqueData(for: .Directors)
+                filteredMovies = movies.filter { movie in movie.director.localizedStandardContains(filter) }
+            case .Genre:
+                data = getAllUniqueData(for: .Genre)
+                filteredMovies = movies.filter { movie in movie.genre.localizedStandardContains(filter) }
+            case .AllMovies:
+                data = [String]()
+        }
     }
     
     private func getAllUniqueData(for type: SectionType) -> [String] {
@@ -93,7 +83,7 @@ class MovieListViewModelImpl: ObservableObject, MovieListViewModel {
         }
         
         let uniqueData = Set(substrings
-            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .map { $0.trimmingCharacters(in: CharacterSet([" ", "–"])) }
             .map { String($0) }
         )
         
@@ -107,19 +97,5 @@ class MovieListViewModelImpl: ObservableObject, MovieListViewModel {
             return
         }
         self.movies = movies
-    }
-    
-    func getFilteredMovies(filter: String) -> [Movie] {
-        if filter.isEmpty {
-            return []
-        } else {
-            return movies.filter { movie in
-                movie.title.localizedCaseInsensitiveContains(filter) ||
-                movie.year.localizedStandardContains(filter) ||
-                movie.actors.localizedCaseInsensitiveContains(filter) ||
-                movie.genre.localizedCaseInsensitiveContains(filter) ||
-                movie.director.localizedCaseInsensitiveContains(filter)
-            }
-        }
     }
 }

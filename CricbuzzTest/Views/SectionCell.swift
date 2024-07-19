@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SectionCell: View {
     let type: SectionType
-    var viewModel: MovieListViewModel
+    @EnvironmentObject var viewModelConatiner: ViewModelContainer<MovieListViewModelImpl>
     @Binding var selectedSection: SectionType?
     
     var body: some View {
@@ -29,15 +29,16 @@ struct SectionCell: View {
                     selectedSection = nil
                 } else {
                     selectedSection = type
+                    viewModelConatiner.viewModel.onExpand(type: type)
                 }
             }
             
             if selectedSection == type {
                 if type != .AllMovies {
-                    SectionView(type: type, viewModel: viewModel)
+                    SectionView(type: type)
                         .padding(8)
                 } else {
-                    SectionView(type: type, viewModel: viewModel)
+                    SectionView(type: type)
                         .padding(8)
                 }
             }

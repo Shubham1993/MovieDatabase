@@ -11,39 +11,25 @@ struct SectionView: View {
     
     @State private var selectedSection: String? = nil
     var type: SectionType
-    var viewModel: MovieListViewModel
-    var data: [String]
+    @EnvironmentObject var viewModelContainer: ViewModelContainer<MovieListViewModelImpl>
     
-    init(type: SectionType, viewModel: MovieListViewModel) {
+    init(type: SectionType) {
         self.type = type
-        self.viewModel = viewModel
-        switch type {
-            case .Year:
-                data = viewModel.years
-            case .Actors:
-                data = viewModel.actors
-            case .Directors:
-                data = viewModel.directors
-            case .Genre:
-                data = viewModel.genres
-            case .AllMovies:
-                data = [String]()
-        }
     }
     
     var body: some View {
         if type == .AllMovies {
-            List(viewModel.movies, id: \.self.imdbID) { movie in
+            List(viewModelContainer.viewModel.movies, id: \.self.imdbID) { movie in
                 MovieCell(movie: movie)
                     .listRowBackground(Color.white)
             }
             .contentShape(Rectangle())
             .contentMargins(0)
-            .frame(height: CGFloat(min(viewModel.movies.count * 150, 500)))
+            .frame(height: CGFloat(min(viewModelContainer.viewModel.movies.count * 150, 500)))
             .background(Color.white)
             .padding(.top, 8)
         } else {
-            List(data, id: \.self) { name in
+            List(viewModelContainer.viewModel.data, id: \.self) { name in
                 HStack {
                     Text(name)
                     Spacer()
@@ -61,15 +47,16 @@ struct SectionView: View {
                         selectedSection = nil
                     } else {
                         selectedSection = name
+                        viewModelContainer.viewModel.onExpand(type: type, filter: name)
                     }
                 }
                 
                 if selectedSection == name {
-                    MovieListView(name: name, viewModel: viewModel)
+                    MovieListView(type: type, name: name)
                 }
             }
             .scrollBounceBehavior(.basedOnSize)
-            .frame(height: CGFloat(min(data.count * 50, 300)))
+            .frame(height: CGFloat(min(viewModelContainer.viewModel.data.count * 50, 300)))
             .contentMargins(0)
         }
     }

@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct MovieDatabaseView: View {
-    @StateObject private var viewModel = MovieListViewModelImpl()
+    @EnvironmentObject var viewModelContainer: ViewModelContainer<MovieListViewModelImpl>
     @State private var selectedSection: SectionType? = nil
     var body: some View {
         NavigationView {
             VStack {
-                if !viewModel.searchText.isEmpty {
-                    if viewModel.filteredMovies.count > 0 {
-                        List(viewModel.filteredMovies, id: \.self.imdbID) { movie in
+                if !viewModelContainer.viewModel.searchText.isEmpty {
+                    if viewModelContainer.viewModel.filteredMovies.count > 0 {
+                        List(viewModelContainer.viewModel.filteredMovies, id: \.self.imdbID) { movie in
                             MovieCell(movie: movie)
                                 .listRowBackground(Color.white)
                         }
@@ -26,7 +26,7 @@ struct MovieDatabaseView: View {
                     }
                 } else {
                     List(SectionType.allCases, id: \.self.rawValue) { item in
-                        SectionCell(type: item, viewModel: viewModel, selectedSection: $selectedSection)
+                        SectionCell(type: item, selectedSection: $selectedSection)
                             .listRowBackground(Color.white)
                             .padding(.vertical, 8)
                     }
@@ -35,10 +35,10 @@ struct MovieDatabaseView: View {
             .contentMargins(0)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarTitle("Movie Database")
-            .searchable(text: $viewModel.searchText, prompt: "Search movies by title/actor/genre/director")
+            .searchable(text: $viewModelContainer.viewModel.searchText, prompt: "Search movies by title/actor/genre/director")
         }
         .onAppear(perform: {
-            viewModel.loadMovies()
+            viewModelContainer.viewModel.loadMovies()
         })
         .tint(.black)
     }
