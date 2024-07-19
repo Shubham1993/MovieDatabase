@@ -15,6 +15,7 @@ protocol MovieListViewModel {
     var genres: [String] { get }
     var directors: [String] { get }
     var actors: [String] { get }
+    func loadMovies()
     func getFilteredMovies(filter: String) -> [Movie]
 }
 
@@ -28,7 +29,7 @@ enum SectionType: String, CaseIterable {
 
 class MovieListViewModelImpl: ObservableObject, MovieListViewModel {
     var movies: [Movie] = []
-    var searchText: String
+    @Published var searchText: String = ""
     
     private lazy var allYears: [String] = {
         return getAllUniqueData(for: .Year)
@@ -75,11 +76,6 @@ class MovieListViewModelImpl: ObservableObject, MovieListViewModel {
         return allActors
     }
     
-    init() {
-        self.searchText = ""
-        self.movies = loadMovies()
-    }
-    
     private func getAllUniqueData(for type: SectionType) -> [String] {
         var substrings = [Substring]()
         
@@ -104,13 +100,13 @@ class MovieListViewModelImpl: ObservableObject, MovieListViewModel {
         return Array(uniqueData).sorted()
     }
     
-    private func loadMovies() -> [Movie] {
+    func loadMovies() {
         guard let url = Bundle.main.url(forResource: "movies", withExtension: "json"),
               let data = try? Data(contentsOf: url),
               let movies = try? JSONDecoder().decode([Movie].self, from: data) else {
-            return []
+            return
         }
-        return movies
+        self.movies = movies
     }
     
     func getFilteredMovies(filter: String) -> [Movie] {

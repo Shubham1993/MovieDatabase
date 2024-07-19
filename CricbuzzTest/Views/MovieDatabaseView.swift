@@ -37,6 +37,9 @@ struct MovieDatabaseView: View {
             .navigationBarTitle("Movie Database")
             .searchable(text: $viewModel.searchText, prompt: "Search movies by title/actor/genre/director")
         }
+        .onAppear(perform: {
+            viewModel.loadMovies()
+        })
         .tint(.black)
     }
 }
