@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct MovieDatabaseView: View {
-    @EnvironmentObject var viewModelContainer: ViewModelContainer<MovieListViewModelImpl>
+    @StateObject private var viewModelContainer = ViewModelContainer(viewModel: MovieListViewModelImpl())
+    
     @State private var selectedSection: SectionType? = nil
     var body: some View {
         NavigationView {
@@ -40,6 +41,7 @@ struct MovieDatabaseView: View {
         .onAppear(perform: {
             viewModelContainer.viewModel.loadMovies()
         })
+        .environmentObject(viewModelContainer)
         .tint(.black)
     }
 }

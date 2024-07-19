@@ -9,12 +9,9 @@ import SwiftUI
 
 @main
 struct CricbuzzTestApp: App {
-    @StateObject private var viewModelContainer = ViewModelContainer(viewModel: MovieListViewModelImpl())
-
     var body: some Scene {
         WindowGroup {
             MovieDatabaseView()
-                .environmentObject(viewModelContainer)
         }
     }
 }
