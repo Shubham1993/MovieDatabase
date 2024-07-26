@@ -19,6 +19,12 @@ struct MovieListView: View {
                     .listRowBackground(Color.white)
             }
         }
+        .onAppear(perform: {
+            UIScrollView.appearance().bounces = false
+        })
+        .onDisappear(perform: {
+            UIScrollView.appearance().bounces = true
+        })
         .padding(.horizontal, -16)
         .padding(.vertical, -13)
         .contentMargins(0)
