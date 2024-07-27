@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct MovieListView: View {
+    @Environment(\.colorScheme) var colorScheme
     var type: SectionType
     var name: String
     @EnvironmentObject var viewModelContainer: ViewModelContainer<MovieListViewModelImpl>
-    let maxHeight: CGFloat = 300
+    let maxHeight: Int = 500
+    let cellHeight: Int = 150
     var body: some View {
         List {
             ForEach(viewModelContainer.viewModel.filteredMovies, id: \.imdbID) { movie in
                 MovieCell(movie: movie)
-                    .listRowBackground(Color.white)
+                    .listRowBackground(Color(UIColor.secondarySystemGroupedBackground))
             }
         }
         .onAppear(perform: {
@@ -25,14 +27,13 @@ struct MovieListView: View {
         .onDisappear(perform: {
             UIScrollView.appearance().bounces = true
         })
-        .padding(.horizontal, -16)
-        .padding(.vertical, -13)
+        .listStyle(PlainListStyle())
+        .scrollIndicators(.hidden)
         .contentMargins(0)
-        .scrollBounceBehavior(.basedOnSize)
         .frame(height: getHeight())
     }
     
     func getHeight() -> CGFloat {
-        return CGFloat(min(viewModelContainer.viewModel.filteredMovies.count * 150, 500))
+        return CGFloat(min(viewModelContainer.viewModel.filteredMovies.count * cellHeight, maxHeight))
     }
 }

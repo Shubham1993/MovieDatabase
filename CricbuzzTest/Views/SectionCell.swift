@@ -15,14 +15,11 @@ struct Cell: View {
         VStack(alignment: .leading) {
             HStack {
                 Text(type.rawValue)
-                    .foregroundStyle(Color.black)
                 Spacer()
                 if selectedSection == type && selectedSection != .AllMovies {
                     Image(systemName: "chevron.up")
-                        .foregroundStyle(Color.black)
                 } else {
                     Image(systemName: "chevron.right")
-                        .foregroundStyle(Color.black)
                 }
             }
             .contentShape(Rectangle())

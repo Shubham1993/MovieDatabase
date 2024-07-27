@@ -36,18 +36,14 @@ struct MovieCell: View {
                         }
                         VStack(alignment: .leading, spacing: 8) {
                             Text(movie.title)
-                                .foregroundStyle(Color.black)
                                 .fontWeight(.medium)
                             Text("Language: \(movie.language)")
-                                .foregroundStyle(Color.black)
                             Text("Year: \(movie.year)")
-                                .foregroundStyle(Color.black)
                         }
                     }
                 }
                 .contentShape(Rectangle())
                 .padding(.horizontal, 8)
-                .background(Color.clear)
                 .frame(height: 150)
                 .onTapGesture {
                     isTapped.toggle()

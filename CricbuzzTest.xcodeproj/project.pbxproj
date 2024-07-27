@@ -20,6 +20,7 @@
 		5192F9D82C4A8A3600FAC71D /* SectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5192F9D72C4A8A3600FAC71D /* SectionCell.swift */; };
 		5192F9DA2C4A940C00FAC71D /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5192F9D92C4A940C00FAC71D /* MovieDetail.swift */; };
 		5192F9DC2C4B0FEB00FAC71D /* ViewModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5192F9DB2C4B0FEB00FAC71D /* ViewModelContainer.swift */; };
+		51EEAF542C53C02B00123DC5 /* AllMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EEAF532C53C02B00123DC5 /* AllMovies.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		5192F9D72C4A8A3600FAC71D /* SectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCell.swift; sourceTree = "<group>"; };
 		5192F9D92C4A940C00FAC71D /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
 		5192F9DB2C4B0FEB00FAC71D /* ViewModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelContainer.swift; sourceTree = "<group>"; };
+		51EEAF532C53C02B00123DC5 /* AllMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMovies.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 				5192F9D32C4A89B900FAC71D /* MovieListView.swift */,
 				5192F9D12C4A896700FAC71D /* MovieCell.swift */,
 				5192F9D92C4A940C00FAC71D /* MovieDetail.swift */,
+				51EEAF532C53C02B00123DC5 /* AllMovies.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 				5192F9B92C4A566400FAC71D /* CricbuzzTestApp.swift in Sources */,
 				5192F9DA2C4A940C00FAC71D /* MovieDetail.swift in Sources */,
 				5192F9DC2C4B0FEB00FAC71D /* ViewModelContainer.swift in Sources */,
+				51EEAF542C53C02B00123DC5 /* AllMovies.swift in Sources */,
 				5192F9CE2C4A56C900FAC71D /* Movie.swift in Sources */,
 				5192F9D62C4A8A0A00FAC71D /* SectionView.swift in Sources */,
 				5192F9D22C4A896700FAC71D /* MovieCell.swift in Sources */,

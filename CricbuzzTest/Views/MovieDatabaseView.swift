@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MovieDatabaseView: View {
     @StateObject private var viewModelContainer = ViewModelContainer(viewModel: MovieListViewModelImpl())
-    
+    @Environment(\.colorScheme) var colorScheme
     @State private var selectedSection: SectionType? = nil
     var body: some View {
         NavigationView {
@@ -18,9 +18,9 @@ struct MovieDatabaseView: View {
                     if viewModelContainer.viewModel.filteredMovies.count > 0 {
                         List(viewModelContainer.viewModel.filteredMovies, id: \.self.imdbID) { movie in
                             MovieCell(movie: movie)
-                                .listRowBackground(Color.white)
+                                .listRowBackground(Color(UIColor.secondarySystemGroupedBackground))
                         }
-                        .background(Color.white)
+                        .listStyle(PlainListStyle())
                         .padding(.top, 8)
                     } else {
                         Text("No result found")
@@ -28,9 +28,10 @@ struct MovieDatabaseView: View {
                 } else {
                     List(SectionType.allCases, id: \.self.rawValue) { item in
                         SectionCell(type: item, selectedSection: $selectedSection)
-                            .listRowBackground(Color.white)
+                            .listRowBackground(Color(UIColor.secondarySystemGroupedBackground))
                             .padding(.vertical, 8)
                     }
+                    .listStyle(PlainListStyle())
                 }
             }
             .contentMargins(0)
@@ -42,7 +43,7 @@ struct MovieDatabaseView: View {
             viewModelContainer.viewModel.loadMovies()
         })
         .environmentObject(viewModelContainer)
-        .tint(.black)
+        .tint(colorScheme == .dark ? .white : .black)
     }
 }
 

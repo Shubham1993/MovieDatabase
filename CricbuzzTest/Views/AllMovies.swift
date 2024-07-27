@@ -13,10 +13,11 @@ struct AllMovies: View {
         VStack {
             List(viewModelContainer.viewModel.movies, id: \.self.imdbID) { movie in
                 MovieCell(movie: movie)
-                    .listRowBackground(Color.white)
+                    .listRowBackground(Color(UIColor.secondarySystemGroupedBackground))
             }
+            .listStyle(PlainListStyle())
+            .scrollIndicators(.hidden)
             .contentMargins(0)
-            .background(Color.white)
             .padding(.top, 8)
         }
         .navigationTitle("All Movies")
